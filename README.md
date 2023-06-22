@@ -1,2 +1,4 @@
-# test_from_stilsoft
-Тестовое задание для stilsoft
+# stilsoft
+
+### ЦЕЛЬ
+Сделать простое REST WebAPI на Python, используя Django REST Framework
