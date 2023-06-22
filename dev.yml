@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+
+  app:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_started
+      migrations:
+        condition: service_completed_successfully
+    volumes:
+      - .:/app
+    command: python -Wd src/manage.py runserver 0.0.0.0:8000
+
+  migrations:
+    build:
+      context: .
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+    env_file: .env
+    command: python src/manage.py migrate
+
+  db:
+    image: postgres:15.3
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASS}
+      - POSTGRES_DB=${DATABASE_NAME}
